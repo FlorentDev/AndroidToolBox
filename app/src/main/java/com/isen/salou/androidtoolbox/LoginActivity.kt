@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.isen.salou.androidtoolbox.checkEmulator.DetectEmulator
 import kotlinx.android.synthetic.main.activity_login.*
 
+
 class LoginActivity : AppCompatActivity() {
 
     var REQUEST_CODE_PERMISSIONS = 100
@@ -41,6 +42,13 @@ class LoginActivity : AppCompatActivity() {
 
         isQEmuEnvDetected()
 
+        Log.i("DetectEmul" ,DetectEmul().toString() )
+
+
+        if (DetectEmul()) {
+            moveTaskToBack(true);
+            onDestroy()
+        }
     }
 
     override fun onResume() {
@@ -106,6 +114,40 @@ class LoginActivity : AppCompatActivity() {
             Log.i("QEmu" , "QEmu environment not detected.")
             return false
         }
+    }
+
+    fun DetectEmul(): Boolean {
+        var nbfundetect = 0
+
+        if (DetectEmulator.isEmulatorCheck1.equals(true))
+        { nbfundetect += 1 }
+        if (DetectEmulator.hasKnownDeviceId(applicationContext).equals(true))
+        { nbfundetect += 1 }
+        if (DetectEmulator.hasKnownPhoneNumber(applicationContext).equals(true))
+        { nbfundetect += 1 }
+        if (DetectEmulator.isOperatorNameAndroid(applicationContext).equals(true))
+        { nbfundetect += 1 }
+        if (DetectEmulator.hasKnownImsi(applicationContext).equals(true))
+        { nbfundetect += 1 }
+        if (DetectEmulator.hasEmulatorBuild(applicationContext).equals(true))
+        { nbfundetect += 1 }
+        if (DetectEmulator.hasPipes().equals(true))
+        { nbfundetect += 1 }
+        if (DetectEmulator.hasQEmuDrivers().equals(true))
+        { nbfundetect += 1 }
+        if (DetectEmulator.hasQEmuFiles().equals(true))
+        { nbfundetect += 1 }
+        if (DetectEmulator.hasGenyFiles().equals(true))
+        { nbfundetect += 1 }
+
+        return nbfundetect != 0
+
+    }
+
+
+    override fun onDestroy() {
+        android.os.Process.killProcess(android.os.Process.myPid())
+        super.onDestroy()
     }
 }
 

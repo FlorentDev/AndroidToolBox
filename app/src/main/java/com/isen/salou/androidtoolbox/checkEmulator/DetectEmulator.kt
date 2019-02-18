@@ -86,10 +86,13 @@ class DetectEmulator {
             "310260000000000" // Default imsi id
         )
         private val known_pipes = arrayOf("/dev/socket/qemud", "/dev/qemu_pipe")
-        private val known_files =
-            arrayOf("/system/lib/libc_malloc_debug_qemu.so", "/sys/qemu_trace", "/system/bin/qemu-props")
+
+        private val known_files = arrayOf("/system/lib/libc_malloc_debug_qemu.so", "/sys/qemu_trace", "/system/bin/qemu-props")
+
         private val known_geny_files = arrayOf("/dev/socket/genyd", "/dev/socket/baseband_genyd")
+
         private val known_qemu_drivers = arrayOf("goldfish")
+
         /**
          * Known props, in the format of [property name, value to seek] if value to seek is null, then it is assumed that
          * the existence of this property (anything not null) indicates the QEmu environment.
@@ -116,7 +119,7 @@ class DetectEmulator {
          * The "known" props have the potential for false-positiving due to interesting (see: poorly) made Chinese
          * devices/odd ROMs. Keeping this threshold low will result in better QEmu detection with possible side affects.
          */
-        private val MIN_PROPERTIES_THRESHOLD = 0x5
+        private val MIN_PROPERTIES_THRESHOLD = 0x9
 
         init {
             // This is only valid for arm
@@ -353,14 +356,22 @@ class DetectEmulator {
                 val property_value = Utilities.getProp(context, property.name)
                 // See if we expected just a non-null
                 if (property.seek_value == null) {
+
+                    Log.i("hasQEmuProps" , property.name +" , " + property.seek_value  )
+
                     found_props++
                 }
                 // See if we expected a value to seek
                 if (property.seek_value != null && property_value.indexOf(property.seek_value!!) != -1) {
+
+                    Log.i("hasQEmuProps" , property.name + " == " +property.seek_value   )
+
                     found_props++
                 }
 
             }
+
+            Log.i("hasQEmuProps" ,  found_props.toString()   )
 
             return if (found_props >= MIN_PROPERTIES_THRESHOLD) {
                 true
