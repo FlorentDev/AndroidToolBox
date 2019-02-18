@@ -1,6 +1,7 @@
 package com.isen.salou.androidtoolbox
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -13,14 +14,29 @@ import android.widget.Toast
 import com.isen.salou.androidtoolbox.checkEmulator.DetectEmulator
 import kotlinx.android.synthetic.main.activity_login.*
 
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
+import com.google.firebase.iid.FirebaseInstanceId
 
 class LoginActivity : AppCompatActivity() {
 
     var REQUEST_CODE_PERMISSIONS = 100
 
+    @SuppressLint("WrongThread")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        /**
+         * Code Copié de Jules --------------------------
+         */
+        val retour: String = FirebaseInstanceId.getInstance().id
+        Toast.makeText(this, "id firebase "+ retour, Toast.LENGTH_LONG).show()
+        /**
+         * ---------------------------------------------------------
+         */
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ActivityCompat.requestPermissions(
@@ -43,11 +59,12 @@ class LoginActivity : AppCompatActivity() {
 
         isQEmuEnvDetected()
         Log.i("DetectEmul" ,DetectEmul().toString() )
-
+/*
         if (DetectEmul()) {
             moveTaskToBack(true);
             onDestroy()
         }
+        */
     }
 
     override fun onResume() {
