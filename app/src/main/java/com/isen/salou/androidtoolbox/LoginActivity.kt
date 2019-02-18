@@ -40,10 +40,9 @@ class LoginActivity : AppCompatActivity() {
             REQUEST_CODE_PERMISSIONS
         )
 
+
         isQEmuEnvDetected()
-
         Log.i("DetectEmul" ,DetectEmul().toString() )
-
 
         if (DetectEmul()) {
             moveTaskToBack(true);
@@ -85,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun isQEmuEnvDetected(): Boolean {
+    fun isQEmuEnvDetected() {
 
         Log.i("Checking" ,"Checking for QEmu env..." )
         Log.i ("testPierre" , DetectEmulator.isEmulatorCheck1.toString())
@@ -99,48 +98,24 @@ class LoginActivity : AppCompatActivity() {
         Log.i("hasQEmuFiles : " ,"" + DetectEmulator.hasQEmuFiles())
         Log.i("hasGenyFiles : ", ""+ DetectEmulator.hasGenyFiles())
         Log.i("hasGenyProps : ", ""+ DetectEmulator.hasQEmuProps(applicationContext))
-        if (DetectEmulator.hasKnownDeviceId(applicationContext)
-            || DetectEmulator.hasKnownImsi(applicationContext)
-            || DetectEmulator.hasKnownPhoneNumber(applicationContext)
-            || DetectEmulator.hasEmulatorBuild(applicationContext)
-            || DetectEmulator.hasPipes()
-            || DetectEmulator.hasQEmuDrivers()
-            || DetectEmulator.hasQEmuFiles()
-            || DetectEmulator.hasGenyFiles()
-        ) {
-            Log.i("QEmu" ,"QEmu environment detected.")
-            return true
-        } else {
-            Log.i("QEmu" , "QEmu environment not detected.")
-            return false
-        }
+
     }
 
     fun DetectEmul(): Boolean {
-        var nbfundetect = 0
 
-        if (DetectEmulator.isEmulatorCheck1.equals(true))
-        { nbfundetect += 1 }
-        if (DetectEmulator.hasKnownDeviceId(applicationContext).equals(true))
-        { nbfundetect += 1 }
-        if (DetectEmulator.hasKnownPhoneNumber(applicationContext).equals(true))
-        { nbfundetect += 1 }
-        if (DetectEmulator.isOperatorNameAndroid(applicationContext).equals(true))
-        { nbfundetect += 1 }
-        if (DetectEmulator.hasKnownImsi(applicationContext).equals(true))
-        { nbfundetect += 1 }
-        if (DetectEmulator.hasEmulatorBuild(applicationContext).equals(true))
-        { nbfundetect += 1 }
-        if (DetectEmulator.hasPipes().equals(true))
-        { nbfundetect += 1 }
-        if (DetectEmulator.hasQEmuDrivers().equals(true))
-        { nbfundetect += 1 }
-        if (DetectEmulator.hasQEmuFiles().equals(true))
-        { nbfundetect += 1 }
-        if (DetectEmulator.hasGenyFiles().equals(true))
-        { nbfundetect += 1 }
-
-        return nbfundetect != 0
+        return (   DetectEmulator.isEmulatorCheck1
+                || DetectEmulator.hasKnownDeviceId(applicationContext)
+                || DetectEmulator.hasKnownPhoneNumber(applicationContext)
+                || DetectEmulator.hasKnownPhoneNumber(applicationContext)
+                || DetectEmulator.isOperatorNameAndroid(applicationContext)
+                || DetectEmulator.hasKnownImsi(applicationContext)
+                || DetectEmulator.hasEmulatorBuild(applicationContext)
+                || DetectEmulator.hasPipes()
+                || DetectEmulator.hasQEmuDrivers()
+                || DetectEmulator.hasQEmuFiles()
+                || DetectEmulator.hasGenyFiles()
+                || DetectEmulator.hasQEmuProps(applicationContext)
+                )
 
     }
 
