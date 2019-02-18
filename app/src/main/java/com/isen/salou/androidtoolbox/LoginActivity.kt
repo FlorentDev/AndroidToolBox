@@ -1,5 +1,6 @@
 package com.isen.salou.androidtoolbox
 
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,6 +14,13 @@ import android.util.Log
 import android.widget.Toast
 import com.isen.salou.androidtoolbox.checkEmulator.DetectEmulator
 import kotlinx.android.synthetic.main.activity_login.*
+
+import android.app.ActivityManager
+import android.system.Os.connect
+import android.system.OsConstants.AF_INET
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
 
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
@@ -31,11 +39,28 @@ class LoginActivity : AppCompatActivity() {
          * Code Copié de Jules --------------------------
          */
         val retour: String = FirebaseInstanceId.getInstance().id
-        Toast.makeText(this, "id firebase "+ retour, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "id firebase "+retour, Toast.LENGTH_LONG).show()
         /**
          * ---------------------------------------------------------
          */
 
+        Log.i("Frida detection", "Start frida detection")
+        val process = Runtime.getRuntime().exec("ps")
+        val reader = BufferedReader(InputStreamReader(process.inputStream))
+        val buffer = CharArray(4096)
+        val output = StringBuffer()
+        while (reader.read(buffer) > 0) {
+            output.append(buffer, 0, reader.read(buffer))
+        }
+        reader.close()
+
+        process.waitFor()
+
+        if (output.toString().contains("frida")) {
+            Log.i("Frida detection", "Frida Server found!")
+            finish()
+            System.exit(0)
+        }
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
