@@ -12,19 +12,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import com.google.firebase.iid.FirebaseInstanceId
 import com.isen.salou.androidtoolbox.checkEmulator.DetectEmulator
 import kotlinx.android.synthetic.main.activity_login.*
-
-import android.app.ActivityManager
-import android.system.Os.connect
-import android.system.OsConstants.AF_INET
-import java.io.BufferedReader
-import java.io.InputStreamReader
-
-
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
-import com.google.firebase.iid.FirebaseInstanceId
 
 class LoginActivity : AppCompatActivity() {
 
@@ -44,23 +34,7 @@ class LoginActivity : AppCompatActivity() {
          * ---------------------------------------------------------
          */
 
-        Log.i("Frida detection", "Start frida detection")
-        val process = Runtime.getRuntime().exec("ps")
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val buffer = CharArray(4096)
-        val output = StringBuffer()
-        while (reader.read(buffer) > 0) {
-            output.append(buffer, 0, reader.read(buffer))
-        }
-        reader.close()
 
-        process.waitFor()
-
-        if (output.toString().contains("frida")) {
-            Log.i("Frida detection", "Frida Server found!")
-            finish()
-            System.exit(0)
-        }
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
