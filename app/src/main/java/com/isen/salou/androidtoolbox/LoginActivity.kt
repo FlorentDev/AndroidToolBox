@@ -130,6 +130,7 @@ class LoginActivity : AppCompatActivity() {
                 }else{
                     this.getSharedPreferences("authent", Context.MODE_PRIVATE).edit().remove("is_connect").apply()
                     Log.i("account", "No valid")
+                    Toast.makeText(this, "Password not valid", Toast.LENGTH_LONG).show()
                 }
             }
         } else {

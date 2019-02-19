@@ -52,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun disconnect() {
-        this.getSharedPreferences("authent", Context.MODE_PRIVATE).edit().clear().apply()
-        finish()
+        this.getSharedPreferences("authent", Context.MODE_PRIVATE).edit().remove("is_connect").apply()
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 }
